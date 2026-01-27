@@ -24,4 +24,4 @@
 3.  ¡Empieza a organizar tu día!
 
 ---
-Desarrollado con ❤️ por [Tu Nombre o Usuario de GitHub]
+Desarrollado con ❤️ por Juan Diego Gaitán
