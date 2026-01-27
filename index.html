@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="es">
+<head > 
+    <link rel="stylesheet" href="style.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mi To-Do List</title>
+    <script src="script.js" defer></script>
+</head>
+<body>
+
+    <div class="container">
+    <h1>Mis Tareas</h1>
+    
+    <div class="input-group">
+        <input type="text" id="input-tarea" placeholder="¿Qué vamos a hacer hoy?">
+        <button id="boton-agregar">Añadir</button>
+    </div>
+
+    <ul id="lista-tareas"></ul>
+
+    <div class="footer">
+        <div class="contadores">
+            <span>Total: <b id="total-tareas">0</b></span>
+            <span>Completadas: <b id="completadas-tareas">0</b></span>
+        </div>
+        <button id="boton-borrar">Borrar Todo el Historial</button>
+    </div>
+</div>

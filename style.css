@@ -1,0 +1,175 @@
+body {
+    background-color: white;
+}
+
+.contenedor {
+    max-width: 500px;       /* No deja que se haga más ancho de 400px */
+    margin: 50px auto;      /* 50px arriba/abajo, y 'auto' a los lados lo centra */
+    background-color: white;
+    padding: 10px;          /* Espacio interno para que el texto no toque los bordes */
+    border-radius: 10px;     /* Bordes redondeados */
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1); /* Una sombra suave para dar profundidad */
+}
+
+.completada {
+    text-decoration: line-through;
+    color: gray; /* Opcional: para que se vea más clarito */
+    cursor: pointer; /* Opcional: para que aparezca la manita al pasar el mouse */
+
+}
+
+:root {
+    --bg-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    --card-bg: rgba(255, 255, 255, 0.95);
+    --text-color: #2d3436;
+    --accent-color: #6c5ce7;
+    --danger-color: #ff7675;
+    --success-color: #55efc4;
+}
+
+body {
+    font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    background: var(--bg-gradient);
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0;
+}
+
+.container {
+    background: var(--card-bg);
+    padding: 2rem;
+    border-radius: 20px;
+    box-shadow: 0 15px 35px rgba(0,0,0,0.2);
+    width: 100%;
+    max-width: 400px;
+}
+
+h1 {
+    text-align: center;
+    color: var(--text-color);
+    margin-bottom: 1.5rem;
+    font-weight: 800;
+}
+
+/* Área de Input */
+.input-group {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 1.5rem;
+}
+
+input[type="text"] {
+    flex: 1;
+    padding: 12px 15px;
+    border: 2px solid #dfe6e9;
+    border-radius: 10px;
+    outline: none;
+    transition: border-color 0.3s;
+}
+
+input[type="text"]:focus {
+    border-color: var(--accent-color);
+}
+
+button#boton-agregar {
+    background: var(--accent-color);
+    color: white;
+    border: none;
+    padding: 12px 20px;
+    border-radius: 10px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: transform 0.2s, background 0.3s;
+}
+
+button#boton-agregar:hover {
+    background: #5b4bc4;
+    transform: translateY(-2px);
+}
+
+/* La Lista */
+ul {
+    list-style: none;
+    padding: 0;
+}
+
+li {
+    background: white;
+    margin-bottom: 10px;
+    padding: 12px 15px;
+    border-radius: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+    cursor: pointer;
+    transition: all 0.3s ease;
+    border-left: 5px solid var(--accent-color);
+    user-select: none; /* Evita que se seleccione el texto al hacer click */
+}
+
+li:hover {
+    transform: scale(1.02);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+}
+
+li.completada {
+    border-left-color: var(--success-color);
+    background: #f1f2f6;
+    text-decoration: line-through;
+    color: #b2bec3;
+    opacity: 0.8;
+}
+
+/* Footer y Botón Borrar */
+.footer {
+    margin-top: 2rem;
+    border-top: 1px solid #dfe6e9;
+    padding-top: 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.contadores {
+    font-size: 0.9rem;
+    color: #636e72;
+    display: flex;
+    justify-content: space-around;
+}
+
+button#boton-borrar {
+    background: none;
+    color: var(--danger-color);
+    border: 2px solid var(--danger-color);
+    padding: 8px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 0.8rem;
+    font-weight: bold;
+    transition: all 0.3s;
+}
+
+button#boton-borrar:hover {
+    background: var(--danger-color);
+    color: white;
+}
+
+
+@keyframes aparecer {
+    from {
+        opacity: 0;
+        transform: translateX(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+li {
+    animation: aparecer 0.4s ease forwards;
+    /* Esto asegura que la animación se ejecute al crear el elemento */
+}
