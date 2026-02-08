@@ -15,10 +15,21 @@ function guardarDatos() {
     const tareas = [];
     const elementosLista = document.querySelectorAll("li");
     
-    elementosLista.forEach((elemento) => { 
+    elementosLista.forEach((elemento) => {
+        // Buscamos el span de la fecha dentro de este elemento
+        const spanFecha = elemento.querySelector(".fecha-tarea");
+        
+        // Obtenemos solo el texto de la fecha
+        const fechaTexto = spanFecha ? spanFecha.innerText : "";
+
+        // TRUCO: Para obtener solo el texto de la tarea y no la fecha,
+        // tomamos todo el texto del LI y le quitamos la parte de la fecha.
+        const textoLimpio = elemento.innerText.replace(fechaTexto, "").trim();
+
         tareas.push({
-            texto: elemento.innerText,
-            completada: elemento.classList.contains("completada")
+            texto: textoLimpio,
+            completada: elemento.classList.contains("completada"),
+            fecha: fechaTexto // ¡Guardamos el nuevo dato!
         });
     });
 
@@ -30,7 +41,7 @@ function cargarDatos() {
 
     if (datosGuardados) {
         const tareas = JSON.parse(datosGuardados);
-        tareas.forEach(tarea => insertarTarea(tarea.texto, tarea.completada));
+        tareas.forEach(tarea => insertarTarea(tarea.texto, tarea.completada,tarea.fecha));
     } else {
         // Tareas de bienvenida para nuevos usuarios
         const predeterminadas = [
@@ -51,10 +62,23 @@ function cargarDatos() {
 function insertarTarea(texto, completada) { 
     if (texto === "") return;
 
+    const listaTareas = document.getElementById("lista-tareas");
     const nuevaTarea = document.createElement("li");
-    nuevaTarea.innerText = texto;
 
+    // 1. Ponemos el texto de la tarea primero
+    // Usamos createTextNode para que el texto no se mezcle con el HTML del span
+    nuevaTarea.appendChild(document.createTextNode(texto));
+
+    // 2. Si la tarea está completada, añadimos la clase
     if (completada) nuevaTarea.classList.add("completada");
+
+    // 3. CREACIÓN DE LA FECHA (¡Lo nuevo!)
+    const spanFecha = document.createElement("span");
+    // Usamos el operador ||: Si hay fecha guardada úsala, si no, usa la de hoy
+    spanFecha.innerText = fecha || new Date().toLocaleDateString(); 
+    spanFecha.classList.add("fecha-tarea"); // Para que el CSS funcione
+    nuevaTarea.appendChild(spanFecha); // Metemos el span DENTRO del li
+
 
     // Evento: Tachar (Click Izquierdo)
     nuevaTarea.addEventListener("click", () => {

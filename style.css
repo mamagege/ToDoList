@@ -219,3 +219,19 @@ button#boton-borrar:hover {
     color: white;
     box-shadow: 0 4px 12px rgba(255, 118, 117, 0.3);
 }
+
+/* Estilo para la fecha */
+.fecha-tarea {
+    font-size: 0.75rem;       /* 1. Más pequeño que el texto normal */
+    color: #888;              /* 2. Color gris suave */
+    font-weight: normal;      /* 3. Letra fina */
+    margin-left: auto;        /* 4. EL TRUCO DE MAGIA */
+    padding-left: 10px;       /* 5. Un poco de aire */
+    white-space: nowrap;      /* 6. Evita que la fecha se parta en dos líneas */
+}
+
+/* Ajuste para que se lea bien en Modo Oscuro */
+body.dark-mode .fecha-tarea {
+    color: #aaa;              /* Un gris un poco más claro para fondo oscuro */
+}
+
