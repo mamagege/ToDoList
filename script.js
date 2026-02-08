@@ -238,3 +238,11 @@ if (Notification.permission !== "granted" && Notification.permission !== "denied
 
 // Revisar recordatorios cada 30 segundos
 setInterval(verificarRecordatorios, 1000);
+
+
+// Añade esto al final de tu archivo JS para probar en GitHub
+document.addEventListener('click', () => {
+    if (Notification.permission !== "granted") {
+        Notification.requestPermission();
+    }
+}, { once: true }); // Solo se ejecutará el primer clic que hagas
