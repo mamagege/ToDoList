@@ -39,6 +39,7 @@ function guardarDatos() {
             recordatorio: recordatorioGuardado
         });
     });
+    
 
     localStorage.setItem("tareas_usuario", JSON.stringify(tareas));
 }
@@ -64,6 +65,7 @@ function cargarDatos() {
         guardarDatos();
     } 
     actualizarContadores();
+
 }
 
 // =========================================
@@ -74,7 +76,11 @@ function insertarTarea(texto, completada, fecha, prioridad, recordatorio) {
     if (texto === "") return;
 
     const nuevaTarea = document.createElement("li");
+    nuevaTarea.setAttribute("draggable", true); // 👈 ¡Ahora es arrastrable!
     nuevaTarea.appendChild(document.createTextNode(texto));
+
+
+
 
     // El SPAN de la derecha (donde ahora irá el recordatorio)
     const spanFecha = document.createElement("span");
@@ -111,7 +117,6 @@ function insertarTarea(texto, completada, fecha, prioridad, recordatorio) {
         if (nuevaTarea.classList.contains("completada")) {
         nuevaTarea.classList.remove("tarea-alerta");
         }
-
         guardarDatos();
         actualizarContadores();
     });
@@ -123,6 +128,18 @@ function insertarTarea(texto, completada, fecha, prioridad, recordatorio) {
         actualizarContadores();
     });
 
+    // Eventos de Arrastre
+    
+    nuevaTarea.addEventListener("dragstart", () => {
+    nuevaTarea.classList.add("dragging");
+    });
+
+    nuevaTarea.addEventListener("dragend", () => {
+    nuevaTarea.classList.remove("dragging");
+    // MUY IMPORTANTE: Guardamos el nuevo orden manual
+    guardarDatos();
+    });
+    
     listaTareas.appendChild(nuevaTarea);
     actualizarContadores();
 }
@@ -182,6 +199,38 @@ function enviarNotificacion(elemento) {
     elemento.classList.add("tarea-alerta");
 }
 
+function reordenarLista() {
+    const lista = document.getElementById("lista-tareas");
+    const tareas = Array.from(lista.querySelectorAll("li"));
+
+    // Definimos el peso de cada prioridad
+    const pesos = {
+        "prioridad-alta": 3,
+        "prioridad-media": 2,
+        "prioridad-baja": 1
+    };
+
+    tareas.sort((a, b) => {
+        // 1. Obtenemos la prioridad de cada elemento buscando sus clases
+        const pesoA = pesos[Array.from(a.classList).find(c => c.startsWith("prioridad-"))] || 0;
+        const pesoB = pesos[Array.from(b.classList).find(c => c.startsWith("prioridad-"))] || 0;
+
+        // 2. Si las prioridades son diferentes, la más alta va primero
+        if (pesoB !== pesoA) {
+            return pesoB - pesoA;
+        }
+
+        // 3. (Opcional) Si tienen la misma prioridad, las completadas van al final
+        const compA = a.classList.contains("completada") ? 1 : 0;
+        const compB = b.classList.contains("completada") ? 1 : 0;
+        return compA - compB;
+    });
+
+    // 4. Volvemos a añadir los elementos ya ordenados a la lista
+    tareas.forEach(tarea => lista.appendChild(tarea));
+}
+
+
 
 themeToggle.addEventListener("click", () => {
     document.body.classList.toggle("dark-mode");
@@ -223,6 +272,67 @@ botonBorrar.addEventListener("click", () => {
     }
 });
 
+//Filtro de tareas pendientes
+const checkFiltro = document.getElementById("check-filtro");
+
+checkFiltro.addEventListener("change", () => {
+    if (checkFiltro.checked) {
+        listaTareas.classList.add("solo-pendientes");
+    } else {
+        listaTareas.classList.remove("solo-pendientes");
+    }
+});
+
+
+listaTareas.addEventListener("dragover", (e) => {
+    e.preventDefault(); // Necesario para permitir el "drop"
+    
+    const draggingItem = document.querySelector(".dragging");
+    if (!draggingItem) return;
+
+    // Buscamos el elemento después del cual debemos soltar
+    const afterElement = getDragAfterElement(listaTareas, e.clientY);
+    
+    if (afterElement == null) {
+        listaTareas.appendChild(draggingItem);
+    } else {
+        listaTareas.insertBefore(draggingItem, afterElement);
+    }
+});
+
+// 2. Función "Detective": Calcula cuál es el elemento más cercano a la punta del mouse
+function getDragAfterElement(container, y) {
+    // Obtenemos todos los elementos excepto el que estamos arrastrando
+    const draggableElements = [...container.querySelectorAll("li:not(.dragging)")];
+
+    return draggableElements.reduce((closest, child) => {
+        const box = child.getBoundingClientRect();
+        const offset = y - box.top - box.height / 2; // Distancia del mouse al centro del hijo
+
+        // Si el mouse está arriba del centro y es el más cercano hasta ahora
+        if (offset < 0 && offset > closest.offset) {
+            return { offset: offset, element: child };
+        } else {
+            return closest;
+        }
+    }, { offset: Number.NEGATIVE_INFINITY }).element;
+}
+
+
+const botonOrdenar = document.getElementById("boton-ordenar");
+
+botonOrdenar.addEventListener("click", () => {
+    // Aplicamos el orden por prioridad
+    reordenarLista();
+    
+    // Guardamos el nuevo orden para que se mantenga al refrescar
+    guardarDatos();
+    
+    // Un pequeño efecto visual de que algo pasó
+    botonOrdenar.style.transform = "rotate(180deg)";
+    setTimeout(() => botonOrdenar.style.transform = "rotate(0deg)", 300);
+});
+
 // =========================================
 // 6. INICIO DE LA APP
 // =========================================
@@ -240,9 +350,4 @@ if (Notification.permission !== "granted" && Notification.permission !== "denied
 setInterval(verificarRecordatorios, 1000);
 
 
-// Añade esto al final de tu archivo JS para probar en GitHub
-document.addEventListener('click', () => {
-    if (Notification.permission !== "granted") {
-        Notification.requestPermission();
-    }
-}, { once: true }); // Solo se ejecutará el primer clic que hagas
+

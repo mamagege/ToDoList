@@ -1,0 +1,372 @@
+/* =========================================
+   VARIABLES Y CONFIGURACIÓN DE TEMAS
+   ========================================= */
+:root {
+    /* Tema Claro (Por defecto) */
+    --bg-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    --bg-color: #f0f2f5;
+    --card-bg: rgba(255, 255, 255, 0.95);
+    --text-color: #2d3436;
+    --accent-color: #6c5ce7;
+    --accent-hover: #5b4bc4;
+    --danger-color: #ff7675;
+    --success-color: #55efc4;
+    --border-color: #dfe6e9;
+    --shadow: 0 15px 35px rgba(0,0,0,0.1);
+}
+
+/* Clase para el Modo Oscuro */
+body.dark-mode {
+    --bg-gradient: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+    --bg-color: #1a1a1a;
+    --card-bg: #2d2d2d;
+    --text-color: #f5f6fa;
+    --accent-color: #a29bfe;
+    --accent-hover: #81ecec;
+    --danger-color: #fab1a0;
+    --success-color: #00b894;
+    --border-color: #444;
+    --shadow: 0 15px 35px rgba(0,0,0,0.4);
+}
+
+/* =========================================
+   ESTILOS BASE
+   ========================================= */
+body {
+    font-family: 'Segoe UI', Roboto, -apple-system, sans-serif;
+    background: var(--bg-gradient);
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0;
+    transition: background 0.5s ease;
+}
+
+.container {
+    background: var(--card-bg);
+    padding: 2.5rem;
+    border-radius: 24px;
+    box-shadow: var(--shadow);
+    width: 100%;
+    max-width: 420px;
+    transition: background 0.3s ease, transform 0.3s ease;
+}
+
+h1 {
+    text-align: center;
+    color: var(--text-color);
+    margin: 0 0 1.5rem 0;
+    font-weight: 800;
+    font-size: 2rem;
+}
+
+/* =========================================
+   BOTÓN DE TEMA (MODO OSCURO)
+   ========================================= */
+#theme-toggle {
+    background: var(--border-color);
+    border: none;
+    border-radius: 50%;
+    width: 45px;
+    height: 45px;
+    cursor: pointer;
+    font-size: 1.2rem;
+    display: block;
+    margin: 0 auto 1rem auto;
+    transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+#theme-toggle:hover {
+    transform: rotate(20deg) scale(1.1);
+}
+
+/* =========================================
+   ENTRADA DE TAREAS (INPUT)
+   ========================================= */
+.input-group {
+    display: flex;
+    flex-direction: column; /* 1. Coloca los elementos uno debajo del otro */
+    gap: 15px;              /* 2. Espacio entre el texto y los controles */
+    margin-bottom: 2rem;
+}
+
+/* Nueva clase para la fila de abajo */
+.controles-tarea {
+    display: flex;          /* 3. Los controles sí van en fila horizontal */
+    gap: 10px;              /* 4. Espacio entre select, fecha y botón */
+}
+
+/* Hacemos que la fecha y el select se repartan el espacio si es necesario */
+.controles-tarea input[type="datetime-local"],
+.controles-tarea select {
+    flex: 1;
+}
+
+
+
+input[type="text"] {
+    flex: 1;
+    padding: 14px 18px;
+    border: 2px solid var(--border-color);
+    background: transparent;
+    color: var(--text-color);
+    border-radius: 14px;
+    outline: none;
+    font-size: 1rem;
+    transition: all 0.3s;
+}
+
+input[type="text"]:focus {
+    border-color: var(--accent-color);
+    box-shadow: 0 0 0 4px rgba(108, 92, 231, 0.1);
+}
+
+button#boton-agregar {
+    background: var(--accent-color);
+    color: white;
+    border: none;
+    padding: 12px 22px;
+    border-radius: 14px;
+    cursor: pointer;
+    font-weight: bold;
+    font-size: 1rem;
+    transition: all 0.3s;
+}
+
+button#boton-agregar:hover {
+    background: var(--accent-hover);
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(108, 92, 231, 0.3);
+}
+
+/* =========================================
+   LISTA DE TAREAS Y ANIMACIONES
+   ========================================= */
+ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+li {
+    background: var(--card-bg);
+    margin-bottom: 12px;
+    padding: 14px 18px;
+    border-radius: 15px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.02);
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    border-left: 6px solid var(--accent-color);
+    color: var(--text-color);
+    animation: aparecer 0.4s ease-out forwards;
+    user-select: none;
+}
+
+@keyframes aparecer {
+    from {
+        opacity: 0;
+        transform: translateY(10px) scale(0.95);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+li:hover {
+    transform: translateX(5px);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+}
+
+li.completada {
+    border-left-color: var(--success-color);
+    background: rgba(0, 0, 0, 0.05);
+    text-decoration: line-through;
+    color: #b2bec3;
+    opacity: 0.6;
+}
+
+/* =========================================
+   FOOTER, CONTADORES Y BOTÓN BORRAR
+   ========================================= */
+.footer {
+    margin-top: 2rem;
+    padding-top: 1.5rem;
+    border-top: 2px solid var(--border-color);
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.contadores {
+    display: flex;
+    justify-content: space-around;
+    font-size: 0.9rem;
+    color: var(--text-color);
+    font-weight: 500;
+}
+
+.contadores span b {
+    color: var(--accent-color);
+    font-size: 1.1rem;
+}
+
+button#boton-borrar {
+    background: transparent;
+    color: var(--danger-color);
+    border: 2px solid var(--danger-color);
+    padding: 10px;
+    border-radius: 12px;
+    cursor: pointer;
+    font-size: 0.85rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    transition: all 0.3s;
+}
+
+button#boton-borrar:hover {
+    background: var(--danger-color);
+    color: white;
+    box-shadow: 0 4px 12px rgba(255, 118, 117, 0.3);
+}
+
+/* Estilo para la fecha */
+.fecha-tarea {
+    font-size: 0.75rem;       /* 1. Más pequeño que el texto normal */
+    color: #888;              /* 2. Color gris suave */
+    font-weight: normal;      /* 3. Letra fina */
+    margin-left: auto;        /* 4. EL TRUCO DE MAGIA */
+    padding-left: 10px;       /* 5. Un poco de aire */
+    white-space: nowrap;      /* 6. Evita que la fecha se parta en dos líneas */
+}
+
+/* Ajuste para que se lea bien en Modo Oscuro */
+body.dark-mode .fecha-tarea {
+    color: #aaa;              /* Un gris un poco más claro para fondo oscuro */
+}
+
+/* Estilo del menú desplegable */
+select {
+    padding: 12px;
+    border: 2px solid var(--border-color);
+    border-radius: 14px;
+    background: transparent;
+    color: var(--text-color);
+    cursor: pointer;
+    outline: none;
+    font-weight: bold;
+    transition: border-color 0.3s;
+}
+
+select:focus {
+    border-color: var(--accent-color);
+}
+
+/* COLORES DE PRIORIDAD (El Semáforo) 🚦 */
+
+/* Prioridad Baja: Verde (aprovechamos tu variable success) */
+li.prioridad-baja {
+    border-left-color: var(--success-color); 
+}
+
+/* Prioridad Media: Amarillo/Naranja */
+li.prioridad-media {
+    border-left-color: #fdcb6e; 
+}
+
+/* Prioridad Alta: Rojo (aprovechamos tu variable danger) */
+li.prioridad-alta {
+    border-left-color: var(--danger-color);
+}
+
+/* Estilo para el selector de fecha y hora */
+input[type="datetime-local"] {
+    padding: 12px;
+    border: 2px solid var(--border-color);
+    border-radius: 14px;
+    background: transparent; /* Se adapta al modo oscuro */
+    color: var(--text-color);
+    font-family: inherit;
+    cursor: pointer;
+    outline: none;
+    transition: border-color 0.3s;
+}
+
+input[type="datetime-local"]:focus {
+    border-color: var(--accent-color);
+}
+
+/* Icono del calendario en modo oscuro (truco para que se vea blanco) */
+body.dark-mode input[type="datetime-local"]::-webkit-calendar-picker-indicator {
+    filter: invert(1);
+    cursor: pointer;
+}
+
+
+/* Clase que se activa cuando vence el tiempo */
+.tarea-alerta {
+    animation: sacudir 0.5s infinite;
+    box-shadow: 0 0 10px #ff4757; /* Un brillo rojo en lugar de cambiar el borde */
+}
+
+@keyframes sacudir {
+    0% { transform: rotate(0deg); }
+    25% { transform: rotate(1deg); }
+    75% { transform: rotate(-1deg); }
+    100% { transform: rotate(0deg); }
+}
+
+/* Asegúrate de que el contenedor principal cambie */
+body.dark-mode .container { /* Cambia .container por el nombre de tu clase principal */
+    background-color: #2d2d2d;
+    color: #ffffff;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+}
+
+/* Los elementos de la lista (li) */
+body.dark-mode li {
+    background-color: #3d3d3d;
+    border-bottom: 1px solid #555;
+    color: #ffffff;
+}
+
+/* El texto de la fecha dentro de la lista */
+body.dark-mode .fecha-tarea {
+    color: #bbb; /* Un gris claro para que no brille tanto como el texto principal */
+}
+
+body.dark-mode input, 
+body.dark-mode select, 
+body.dark-mode button {
+    background-color: #3d3d3d;
+    color: #ffffff;
+    border: 1px solid #555;
+}
+
+/* Para que las opciones del menú también se vean oscuras en algunos navegadores */
+body.dark-mode option {
+    background-color: #2d2d2d;
+    color: #ffffff;
+}
+
+:root {
+    --bg-card: #ffffff;
+    --text-main: #333333;
+}
+
+body.dark-mode {
+    --bg-card: #2d2d2d;
+    --text-main: #ffffff;
+}
+
+/* Y luego usas la variable en tus elementos */
+.tu-contenedor {
+    background-color: var(--bg-card);
+    color: var(--text-main);
+}
+

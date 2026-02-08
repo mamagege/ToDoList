@@ -26,16 +26,32 @@
     </div>
     
         <input type="text" id="input-tarea" placeholder="¿Qué vamos a hacer hoy?">
+
+        <div class="acciones-input">
+        <button id="boton-ordenar" title="Ordenar por prioridad">⇅</button>
         <button id="boton-agregar">Añadir</button>
+        </div>
+        
+
     </div>
 
     <ul id="lista-tareas"></ul>
 
-    <div class="footer">
-        <div class="contadores">
+    <div class="stats">
+
             <span>Total: <b id="total-tareas">0</b></span>
             <span>Completadas: <b id="completadas-tareas">0</b></span>
-        </div>
-        <button id="boton-borrar">Borrar Todo el Historial</button>
+
+            <label class="filter-switch">
+            <input type="checkbox" id="check-filtro">
+            Ocultar terminadas
+            </label>
+
+
+    </div>
+            <div class="danger-zone">
+            <button id="boton-borrar">Eliminar Historial</button>
+
+
     </div>
 </div>
