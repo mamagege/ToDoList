@@ -86,9 +86,24 @@ h1 {
    ========================================= */
 .input-group {
     display: flex;
-    gap: 12px;
+    flex-direction: column; /* 1. Coloca los elementos uno debajo del otro */
+    gap: 15px;              /* 2. Espacio entre el texto y los controles */
     margin-bottom: 2rem;
 }
+
+/* Nueva clase para la fila de abajo */
+.controles-tarea {
+    display: flex;          /* 3. Los controles sí van en fila horizontal */
+    gap: 10px;              /* 4. Espacio entre select, fecha y botón */
+}
+
+/* Hacemos que la fecha y el select se repartan el espacio si es necesario */
+.controles-tarea input[type="datetime-local"],
+.controles-tarea select {
+    flex: 1;
+}
+
+
 
 input[type="text"] {
     flex: 1;
@@ -234,4 +249,76 @@ button#boton-borrar:hover {
 body.dark-mode .fecha-tarea {
     color: #aaa;              /* Un gris un poco más claro para fondo oscuro */
 }
+
+/* Estilo del menú desplegable */
+select {
+    padding: 12px;
+    border: 2px solid var(--border-color);
+    border-radius: 14px;
+    background: transparent;
+    color: var(--text-color);
+    cursor: pointer;
+    outline: none;
+    font-weight: bold;
+    transition: border-color 0.3s;
+}
+
+select:focus {
+    border-color: var(--accent-color);
+}
+
+/* COLORES DE PRIORIDAD (El Semáforo) 🚦 */
+
+/* Prioridad Baja: Verde (aprovechamos tu variable success) */
+li.prioridad-baja {
+    border-left-color: var(--success-color); 
+}
+
+/* Prioridad Media: Amarillo/Naranja */
+li.prioridad-media {
+    border-left-color: #fdcb6e; 
+}
+
+/* Prioridad Alta: Rojo (aprovechamos tu variable danger) */
+li.prioridad-alta {
+    border-left-color: var(--danger-color);
+}
+
+/* Estilo para el selector de fecha y hora */
+input[type="datetime-local"] {
+    padding: 12px;
+    border: 2px solid var(--border-color);
+    border-radius: 14px;
+    background: transparent; /* Se adapta al modo oscuro */
+    color: var(--text-color);
+    font-family: inherit;
+    cursor: pointer;
+    outline: none;
+    transition: border-color 0.3s;
+}
+
+input[type="datetime-local"]:focus {
+    border-color: var(--accent-color);
+}
+
+/* Icono del calendario en modo oscuro (truco para que se vea blanco) */
+body.dark-mode input[type="datetime-local"]::-webkit-calendar-picker-indicator {
+    filter: invert(1);
+    cursor: pointer;
+}
+
+
+/* Clase que se activa cuando vence el tiempo */
+.tarea-alerta {
+    animation: sacudir 0.5s infinite;
+    box-shadow: 0 0 10px #ff4757; /* Un brillo rojo en lugar de cambiar el borde */
+}
+
+@keyframes sacudir {
+    0% { transform: rotate(0deg); }
+    25% { transform: rotate(1deg); }
+    75% { transform: rotate(-1deg); }
+    100% { transform: rotate(0deg); }
+}
+
 
