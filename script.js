@@ -15,7 +15,7 @@ function guardarDatos() {
     const tareas = [];
     const elementosLista = document.querySelectorAll("li");
     
-    elementosLista.forEach((elemento) => {
+    elementosLista.forEach((elemento) => { 
         // Buscamos el span de la fecha dentro de este elemento
         const spanFecha = elemento.querySelector(".fecha-tarea");
         
@@ -59,7 +59,8 @@ function cargarDatos() {
 // 3. LA FÁBRICA DE TAREAS
 // =========================================
 
-function insertarTarea(texto, completada) { 
+// Aceptamos un tercer parámetro: 'fecha'
+function insertarTarea(texto, completada, fecha) { 
     if (texto === "") return;
 
     const listaTareas = document.getElementById("lista-tareas");
@@ -79,15 +80,15 @@ function insertarTarea(texto, completada) {
     spanFecha.classList.add("fecha-tarea"); // Para que el CSS funcione
     nuevaTarea.appendChild(spanFecha); // Metemos el span DENTRO del li
 
+    // 
 
-    // Evento: Tachar (Click Izquierdo)
+    // 4. Eventos (Esto sigue igual que antes)
     nuevaTarea.addEventListener("click", () => {
         nuevaTarea.classList.toggle("completada");
         guardarDatos();
         actualizarContadores();
     });
 
-    // Evento: Borrar (Click Derecho)
     nuevaTarea.addEventListener("contextmenu", (e) => {
         e.preventDefault();
         nuevaTarea.remove();
@@ -98,7 +99,6 @@ function insertarTarea(texto, completada) {
     listaTareas.appendChild(nuevaTarea);
     actualizarContadores();
 }
-
 // =========================================
 // 4. LÓGICA DE INTERFAZ Y CONTADORES
 // =========================================
